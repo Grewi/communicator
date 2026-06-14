@@ -1,0 +1,108 @@
+Возможность передачи коротких текстовых сообщений от сервера к клиенту с уведомлением клиента.
+Предназначена ускоренной процедуры подтверждения действий на стотонних ресурсах.
+
+Параметры алерта:
+1) текст сообщения - строка
+2) Возможность ответа - bool
+3) Срок жизни. Время которое сервер ожидает ответа
+4) Тип ответа: Кнопка подтверждения, введение строки, 
+5) Идентификатор алерта на сервере
+
+Отправка сообщения может быть несколько типов:
+1) Простое текстовое соощение (в том числе номер, ссылка и т.д)
+2) С возможностью подтвердить действие. При выборе положительного ответа на сервер отправляется факт согласия, иначе
+щшибка. Давать ответ серверу является правом, а не обязанностью, по этому любой другой ответ кроме явного согласия, будет 
+передан, как одна и таже ошибка. 
+3) Произвольная строка, так же как и с кнопкой ответ отправляется только при явном согласии пользователя.
+
+Поскольку данный функционал является уязвимым для использования в качестве распространения спама, то настоятельно рекомендуется
+в настройках клиента делать этот функционал выключенным по умолчанию.
+У пользователя должна быть возможность быстрого включения таких сообщений с ограничением по времени.Наиболее оптимально 
+будет 5 - 10 минут.
+
+Пример использования:
+
+Пользователь авторизуется на внешнем ресурсе (на сайте)
+1) Указывает свой коммуникатор на сайте
+2) Сервер сайта делает запрос на алерт и получает подтверждение готовности или отказ 
+    а) Если сервер получил отказ, уведомляет клиента на своём ресурсе о необходимости разрешить приём алерта
+    б) После этого алерт нужно отправить заново
+3) Отправляет алерт
+4) Если алерт требует ответа от пользователя,  сервер ожидает ответа определённое в алерте Время
+
+Пример:
+
+Открытие пользователем окна для приёма сообщения
+
+POST / HTTP/1.1
+Host: example.com
+X-Communicator-Version: 1.0.0
+X-Communicator-To: user1@example.com
+X-Communicator-From: user2@example.com
+X-Transport-I2p:user@g5lsqejlrfjcljodccykcacakylplotgu7exkk3vfsbzdrujw3sa.b32.i2p:12345
+X-Transport-Tor:user@g5lsqejlrfjcljodccykcacakylplotgu7exkk3vfsbzdrujw3sa.onion:12345
+X-Id-Message:123456789
+X-Type-Message: alert
+Content-Language: ru
+Accept: application/json
+Content-Type: application/json; charset=utf-8
+Content-Length: 136
+Connection: close
+
+{
+    "status":"open",
+    "time-start":123456,
+    "time-stop":123456
+}
+
+HTTP/1.1 200 OK
+Content-Language: ru
+Content-Type: application/json; charset=utf-8
+Content-Length: 109
+Connection: close
+
+{
+    "status":"ok"
+}
+
+Возможные статусы ответа:
+ok
+false
+
+Отправка алерта пользователю
+
+
+POST / HTTP/1.1
+Host: example.com
+X-Communicator-To: user2@example.com
+X-Communicator-From: user1@example.com
+X-Transport-I2p:user@g5lsqejlrfjcljodccykcacakylplotgu7exkk3vfsbzdrujw3sa.b32.i2p:12345
+X-Transport-Tor:user@g5lsqejlrfjcljodccykcacakylplotgu7exkk3vfsbzdrujw3sa.onion:12345
+X-Id-Message:123456789
+X-Type-Message: alert
+Content-Language: ru
+Accept: application/json
+Content-Type: application/json; charset=utf-8
+Content-Length: 136
+Connection: close
+
+{
+    "status":"post",
+    "text":"Текст сообщения"
+}
+
+HTTP/1.1 200 OK
+Content-Language: ru
+Content-Type: application/json; charset=utf-8
+Content-Length: 109
+Connection: close
+
+{
+    "type-message":"alert",
+    "status":"ok"
+}
+
+Возможные статусы ответа:
+ok
+timeout
+false
