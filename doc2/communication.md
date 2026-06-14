@@ -19,7 +19,6 @@
 GET / HTTP/1.1
 Host: example.com
 X-Communicator-Search: user@78.107.58.16
-Content-Language: ru
 Accept: application/json
 Connection: close
 ```
@@ -43,4 +42,72 @@ HTTP/1.1 404 OK
 X-Communicator-Search: user@78.107.58.16
 Connection: close
 ```
-## 
+
+## Запрос от коммуникационного сервера
+Данным запросом коммуникационный сервер сообщает, что готов к обмену записями
+
+```
+GET / HTTP/1.1
+Host: example.com
+X-User-Name: user
+X-Communicator-Add: user@78.107.58.16
+Accept: application/json
+Connection: close
+```
+```
+HTTP/1.1 200 OK
+X-Communicator-Search: user@78.107.58.16
+Content-Type: application/json; charset=utf-8
+Content-Length: 109
+Connection: close
+
+{
+    "status":"ok"
+}
+```
+
+## Пример запроса 
+Запрос к коммуникационному серверу от пользовательского сервера на добавление адреса
+
+```
+POST / HTTP/1.1
+Host: example.com
+X-Communicator-Add: user@78.107.58.16
+Accept: application/json
+Content-Type: application/json; charset=utf-8
+Content-Length: 136
+Connection: close
+
+{
+    "key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINGOAlvG+Yl6GXw5qoTOGMGf8Qy8/ePD4QqNFonWZ8xB grewi@grewi"
+}
+```
+
+**Ответы**
+```
+HTTP/1.1 200 OK
+X-Communicator-Add: user@78.107.58.16
+Content-Type: application/json; charset=utf-8
+Content-Length: 109
+Connection: close
+
+{
+    "status":"ok",
+    "key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINGOAlvG+Yl6GXw5qoTOGMGf8Qy8/ePD4QqNFonWZ8xB grewi@grewi"
+    "start": 1781422307,
+    "end": 1781422307
+}
+```
+
+```
+HTTP/1.1 200 OK
+X-Communicator-Add: user@78.107.58.16
+Content-Type: application/json; charset=utf-8
+Content-Length: 109
+Connection: close
+
+{
+    "status":"error",
+    "description": ""
+}
+```
