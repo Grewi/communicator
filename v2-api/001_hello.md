@@ -53,6 +53,11 @@ Connection: close
 
 Пример ответа без авторизации
 
+1. api - Номер версии api 
+2. number - номер запроса 
+3. host - от кого пришёл ответ 
+4. data - Поля стандартного ответа 
+
 ```
 POST / HTTP/1.1
 Host: com2.example.com
@@ -90,6 +95,60 @@ Connection: close
                 "desc": ""
             },
 
+        ],
+        "country": {
+            "iso": "643",
+            "name": "Россия",
+        },
+        "desc": "Короткое описание на странице",
+        "text": "Подробное описание"
+    },
+}
+```
+Пример ответа с авторизацией 
+Присутствует заголовок alias 
+тело запроса шифруется
+
+1. api - Номер версии api 
+2. number - номер запроса 
+3. host - от кого пришёл ответ 
+4. data - Поля стандартного ответа 
+
+```
+POST / HTTP/1.1
+Host: com2.example.com
+alias: 6543210
+Content-Length: 136
+Connection: close
+
+{
+    "api":"1.0.0",
+    "number":"1-1-2"
+    "host":"com.exemple.com",
+    "data": {
+        "name": "Grewi",
+        "names": {
+            "last": "Григорьев",
+            "first": "Евгений",
+            "middle": "Викторович",
+            "patronymic": "",
+            "full": "",
+            "short": ""
+        },
+        "image": "/data/image.jpg",
+        "gallery": [
+            {
+                "link": "/media/1.jpg",
+                "type": "image",
+                "size": "6Kb",
+                "desc": ""
+            },
+            {
+                "link": "/media/1.mp3",
+                "type": "audio",
+                "size": "1Mb",
+                "desc": ""
+            },
         ],
         "country": {
             "iso": "643",
