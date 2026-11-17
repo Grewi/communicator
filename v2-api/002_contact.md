@@ -23,12 +23,6 @@
 >Такой запрос с клиента может быть по ручному вводу хоста или в ответ на полученный запрос 1-3-2
 
 ```
-POST / HTTP/1.1
-Host: com.example.com
-alias: 123456789
-Content-Length: 136
-Connection: close
-
 {
     "api":"1.0.0",
     "number":"2-1-1"
@@ -40,18 +34,12 @@ Connection: close
 >Сервер должен сгенерировать числовой код 
 
 ```
-POST / HTTP/1.1
-Host: com.example.com
-alias: 123456789
-Content-Length: 136
-Connection: close
-
 {
     "api":"1.0.0",
     "number":"2-1-2",
-    "code"
+    "code": 123456
 }
-
+```
 
 ### 2-1-3 Запрос от сервера1 к серверу2 на пердачу кода
 
@@ -59,16 +47,10 @@ Connection: close
 
 
 ```
-POST / HTTP/1.1
-Host: com.example.com
-alias: 123456789
-Content-Length: 136
-Connection: close
-
 {
     "api":"1.0.0",
     "number":"2-1-3",
-    "code"
+    "code":123456
 }
-
+```
 
